@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sub_subjects",
+  "info": {
+    "singularName": "sub-subject",
+    "pluralName": "sub-subjects",
+    "displayName": "SubSubject",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "subjectName": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "subjectName"
+    },
+    "subject": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::subject.subject",
+      "inversedBy": "subsubjects"
+    }
+  }
+}
