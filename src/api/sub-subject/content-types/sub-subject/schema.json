@@ -23,7 +23,13 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::subject.subject",
-      "inversedBy": "subsubjects"
+      "inversedBy": "sub_subjects"
+    },
+    "tutors": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tutor.tutor",
+      "mappedBy": "sub_subjects"
     }
   }
 }

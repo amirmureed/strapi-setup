@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tutors",
+  "info": {
+    "singularName": "tutor",
+    "pluralName": "tutors",
+    "displayName": "Tutor",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "subjects": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::subject.subject",
+      "mappedBy": "tutors"
+    },
+    "Bio": {
+      "type": "text"
+    },
+    "profilePic": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "Education": {
+      "type": "text"
+    },
+    "tutorHours": {
+      "type": "string"
+    },
+    "sub_subjects": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::sub-subject.sub-subject",
+      "inversedBy": "tutors"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

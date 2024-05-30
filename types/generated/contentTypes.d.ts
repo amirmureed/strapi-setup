@@ -742,7 +742,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     username: Attribute.String &
@@ -771,6 +770,8 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    FirstName: Attribute.String;
+    lastName: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -811,20 +812,60 @@ export interface ApiFaqFaq extends Schema.CollectionType {
   };
 }
 
+export interface ApiInquiryInquiry extends Schema.CollectionType {
+  collectionName: 'inquiries';
+  info: {
+    singularName: 'inquiry';
+    pluralName: 'inquiries';
+    displayName: 'Inquiry';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    UserName: Attribute.Relation<
+      'api::inquiry.inquiry',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    Subject: Attribute.String;
+    CallTime: Attribute.String;
+    PhoneNumber: Attribute.String;
+    Email: Attribute.String;
+    Message: Attribute.Text;
+    timeZone: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::inquiry.inquiry',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::inquiry.inquiry',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiStudentStudent extends Schema.CollectionType {
   collectionName: 'students';
   info: {
     singularName: 'student';
     pluralName: 'students';
     displayName: 'Student';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    FirstName: Attribute.String;
-    LastName: Attribute.String;
-    GradeLevel: Attribute.String;
+    EducationLevel: Attribute.String;
     AccountType: Attribute.String;
     ZipCode: Attribute.String;
     Age: Attribute.Integer;
@@ -870,6 +911,11 @@ export interface ApiSubSubjectSubSubject extends Schema.CollectionType {
       'manyToOne',
       'api::subject.subject'
     >;
+    tutors: Attribute.Relation<
+      'api::sub-subject.sub-subject',
+      'manyToMany',
+      'api::tutor.tutor'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -902,10 +948,15 @@ export interface ApiSubjectSubject extends Schema.CollectionType {
   attributes: {
     subjectName: Attribute.String;
     slug: Attribute.UID<'api::subject.subject', 'subjectName'>;
-    subsubjects: Attribute.Relation<
+    sub_subjects: Attribute.Relation<
       'api::subject.subject',
       'oneToMany',
       'api::sub-subject.sub-subject'
+    >;
+    tutors: Attribute.Relation<
+      'api::subject.subject',
+      'manyToMany',
+      'api::tutor.tutor'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -918,6 +969,55 @@ export interface ApiSubjectSubject extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::subject.subject',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTutorTutor extends Schema.CollectionType {
+  collectionName: 'tutors';
+  info: {
+    singularName: 'tutor';
+    pluralName: 'tutors';
+    displayName: 'Tutor';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    subjects: Attribute.Relation<
+      'api::tutor.tutor',
+      'manyToMany',
+      'api::subject.subject'
+    >;
+    Bio: Attribute.Text;
+    profilePic: Attribute.Media;
+    Education: Attribute.Text;
+    tutorHours: Attribute.String;
+    sub_subjects: Attribute.Relation<
+      'api::tutor.tutor',
+      'manyToMany',
+      'api::sub-subject.sub-subject'
+    >;
+    user: Attribute.Relation<
+      'api::tutor.tutor',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::tutor.tutor',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::tutor.tutor',
       'oneToOne',
       'admin::user'
     > &
@@ -944,9 +1044,11 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::faq.faq': ApiFaqFaq;
+      'api::inquiry.inquiry': ApiInquiryInquiry;
       'api::student.student': ApiStudentStudent;
       'api::sub-subject.sub-subject': ApiSubSubjectSubSubject;
       'api::subject.subject': ApiSubjectSubject;
+      'api::tutor.tutor': ApiTutorTutor;
     }
   }
 }

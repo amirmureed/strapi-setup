@@ -19,11 +19,17 @@
       "type": "uid",
       "targetField": "subjectName"
     },
-    "subsubjects": {
+    "sub_subjects": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::sub-subject.sub-subject",
       "mappedBy": "subject"
+    },
+    "tutors": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tutor.tutor",
+      "inversedBy": "subjects"
     }
   }
 }
